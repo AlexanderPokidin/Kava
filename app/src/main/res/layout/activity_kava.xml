@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,7 +13,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Item name"
+        android:text="@string/item_name"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/item_view"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +26,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:text="Description"
+        android:text="@string/description"
         app:layout_constraintEnd_toStartOf="@+id/item_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_name" />
@@ -46,14 +45,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="Price "
+            android:text="@string/price"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="25"
+            android:text=""
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -73,37 +72,41 @@
             android:id="@+id/button_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="decrement"
             android:text="-"
-            android:onClick="decrement"/>
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/item_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
+            android:text="1"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/button_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="increment"
             android:text="+"
-            android:onClick="increment"/>
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/cost_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/customer_name">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="Total cost "
+            android:text="@string/total_cost"
             android:textSize="18sp" />
 
         <TextView
@@ -123,6 +126,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/customer_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="@string/customer_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_view" />
+
+    <Button
+        android:id="@+id/order_button"
+        android:layout_width="160dp"
+        android:layout_height="81dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/create_order"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.437"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cost_layout"
+        android:onClick="submitOrder"/>
+
     <CheckBox
         android:id="@+id/checkBox_favorite"
         android:layout_width="wrap_content"
@@ -130,24 +159,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Add to favorites"
+        android:text="@string/favorites"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/order_button" />
-
-    <Button
-        android:id="@+id/order_button"
-        android:layout_width="160dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Create order"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_name"
-        app:layout_constraintVertical_bias="0.344" />
 
 </android.support.constraint.ConstraintLayout>

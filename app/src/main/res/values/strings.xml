@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Kava</string>
+    <string name="customer_name">Who are you?</string>
+    <string name="item_name">Item name</string>
+    <string name="description">Description</string>
+    <string name="price">Price </string>
+    <string name="total_cost">Total cost </string>
+    <string name="create_order">Create order</string>
+    <string name="favorites">Add to favorites</string>
 </resources>

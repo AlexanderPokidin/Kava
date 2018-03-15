@@ -1,9 +1,12 @@
 package com.pokidin.a.kava;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +16,7 @@ public class KavaActivity extends AppCompatActivity {
     public static final String EXTRA_KAVANO = "kavaNo";
 
     private int count = 1;
+    private int cost;
 
 
     @Override
@@ -20,7 +24,6 @@ public class KavaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kava);
         Log.i(TAG, "onCreate started");
-
 
 
 //        int kavaNo = (Integer) getIntent().getExtras().get(EXTRA_KAVANO);
@@ -45,19 +48,19 @@ public class KavaActivity extends AppCompatActivity {
 
     private Kava readIntent() {
         int kavaNo = (Integer) getIntent().getExtras().get(EXTRA_KAVANO);
-        Kava kava = Kava.kavas[kavaNo];
-        return kava;
+        return Kava.kavas[kavaNo];
     }
 
-    private void calculatePrice(int price) {
-
-        TextView cost = (TextView) findViewById(R.id.cost_text);
-
-        int finCost = price * count;
-        cost.setText("" + finCost);
-
-        Log.i(TAG, "Price is done");
-    }
+//    private int calculatePrice(int price) {
+//
+//        TextView cost = (TextView) findViewById(R.id.cost_text);
+//
+//        int finCost = price * count;
+//        cost.setText("" + finCost);
+//
+//        Log.i(TAG, "Price is done");
+//        return finCost;
+//    }
 
     public void increment(View view) {
         if (count > 4) {
@@ -82,5 +85,26 @@ public class KavaActivity extends AppCompatActivity {
     private void displayCount(int count) {
         TextView number = (TextView) findViewById(R.id.item_count);
         number.setText("" + count);
+    }
+
+    public void submitOrder(View view) {
+        EditText editName = (EditText) findViewById(R.id.customer_name);
+        String customer_Name = editName.getText().toString();
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_SUBJECT, createOrderSubject(customer_Name));
+        intent.putExtra(Intent.EXTRA_TEXT, createOrderMessage(customer_Name, count, cost));
+        startActivity(intent);
+    }
+
+    private String createOrderSubject(String userName) {
+        return getString(R.string.customer_name);
+    }
+
+    private String createOrderMessage(String userName, int count, int cost) {
+        String orderMessage = getString(R.string.customer_name) + "\n";
+        orderMessage += getString(R.string.item_name) + "\n";
+        return orderMessage;
     }
 }
