@@ -81,6 +81,6 @@ public class KavaActivity extends AppCompatActivity {
 
     private void displayCount(int count) {
         TextView number = (TextView) findViewById(R.id.item_count);
-        number.setText("" + number);
+        number.setText("" + count);
     }
 }
