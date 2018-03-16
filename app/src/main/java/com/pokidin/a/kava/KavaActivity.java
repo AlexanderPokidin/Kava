@@ -90,21 +90,29 @@ public class KavaActivity extends AppCompatActivity {
     public void submitOrder(View view) {
         EditText editName = (EditText) findViewById(R.id.customer_name);
         String customer_Name = editName.getText().toString();
+        Log.i(TAG, "Name is: " + customer_Name);
 
         Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_SUBJECT, createOrderSubject(customer_Name));
-        intent.putExtra(Intent.EXTRA_TEXT, createOrderMessage(customer_Name, count, cost));
-        startActivity(intent);
+        intent.setData(Uri.parse("mailto:a.pokidin@gmail.com"));
+        intent.putExtra(Intent.EXTRA_SUBJECT, createOrderSubject() + ", for " + customer_Name);
+        intent.putExtra(Intent.EXTRA_TEXT, createOrderMessage());
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
-    private String createOrderSubject(String userName) {
-        return getString(R.string.customer_name);
+    private String createOrderSubject() {
+        return readIntent().getName();
     }
 
-    private String createOrderMessage(String userName, int count, int cost) {
-        String orderMessage = getString(R.string.customer_name) + "\n";
-        orderMessage += getString(R.string.item_name) + "\n";
+    private String createOrderMessage() {
+        String orderMessage = readIntent().getName() + "\n";
+        orderMessage += readIntent().getSize() + "\n";
+        orderMessage += readIntent().getPrice() + "\n";
+        orderMessage += count + "\n";
+        orderMessage += cost;
+        Log.i(TAG, "Order is: " + orderMessage);
         return orderMessage;
+
     }
 }
