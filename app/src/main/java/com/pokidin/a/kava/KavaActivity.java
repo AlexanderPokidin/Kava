@@ -16,7 +16,6 @@ public class KavaActivity extends AppCompatActivity {
     public static final String EXTRA_KAVANO = "kavaNo";
 
     private int count = 1;
-    private int cost;
 
 
     @Override
@@ -24,7 +23,6 @@ public class KavaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kava);
         Log.i(TAG, "onCreate started");
-
 
 //        int kavaNo = (Integer) getIntent().getExtras().get(EXTRA_KAVANO);
 //        Kava kava = Kava.kavas[kavaNo];
@@ -51,16 +49,14 @@ public class KavaActivity extends AppCompatActivity {
         return Kava.kavas[kavaNo];
     }
 
-//    private int calculatePrice(int price) {
-//
-//        TextView cost = (TextView) findViewById(R.id.cost_text);
-//
-//        int finCost = price * count;
-//        cost.setText("" + finCost);
-//
-//        Log.i(TAG, "Price is done");
-//        return finCost;
-//    }
+    private int calculatePrice(int count) {
+        int price = readIntent().getPrice();
+        int cost = price * count;
+        displayCost(cost);
+        Log.i(TAG, "Price is done");
+        Log.i(TAG, "Cost is: " + cost);
+        return cost;
+    }
 
     public void increment(View view) {
         if (count > 4) {
@@ -70,16 +66,18 @@ public class KavaActivity extends AppCompatActivity {
         }
         count++;
         displayCount(count);
+        calculatePrice(count);
     }
 
     public void decrement(View view) {
-        if (count < 1) {
+        if (count < 2) {
             Toast minToast = Toast.makeText(getApplicationContext(), "There is nothing less", Toast.LENGTH_SHORT);
             minToast.show();
             return;
         }
         count--;
         displayCount(count);
+        calculatePrice(count);
     }
 
     private void displayCount(int count) {
@@ -87,14 +85,15 @@ public class KavaActivity extends AppCompatActivity {
         number.setText("" + count);
     }
 
-    public void submitOrder(View view) {
-        EditText editName = (EditText) findViewById(R.id.customer_name);
-        String customer_Name = editName.getText().toString();
-        Log.i(TAG, "Name is: " + customer_Name);
+    private void displayCost(int cost) {
+        TextView costView = (TextView) findViewById(R.id.cost_text);
+        costView.setText("" + cost);
+    }
 
+    public void submitOrder(View view) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:a.pokidin@gmail.com"));
-        intent.putExtra(Intent.EXTRA_SUBJECT, createOrderSubject() + ", for " + customer_Name);
+        intent.putExtra(Intent.EXTRA_SUBJECT, createOrderSubject());
         intent.putExtra(Intent.EXTRA_TEXT, createOrderMessage());
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
@@ -102,17 +101,22 @@ public class KavaActivity extends AppCompatActivity {
     }
 
     private String createOrderSubject() {
-        return readIntent().getName();
+        EditText editName = (EditText) findViewById(R.id.customer_name);
+        String customer_Name = editName.getText().toString();
+        String orderSubject = readIntent().getName();
+        orderSubject += ", for " + customer_Name;
+        Log.i(TAG, "Name is: " + customer_Name);
+        return orderSubject;
     }
 
     private String createOrderMessage() {
+        int price = readIntent().getPrice();
         String orderMessage = readIntent().getName() + "\n";
         orderMessage += readIntent().getSize() + "\n";
-        orderMessage += readIntent().getPrice() + "\n";
+        orderMessage += price + "\n";
         orderMessage += count + "\n";
-        orderMessage += cost;
+        orderMessage += calculatePrice(count);
         Log.i(TAG, "Order is: " + orderMessage);
         return orderMessage;
-
     }
 }
