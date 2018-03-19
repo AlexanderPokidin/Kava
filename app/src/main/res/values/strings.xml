@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kava</string>
+    <string name="app_name">KavaBulki</string>
     <string name="customer_name">Who are you?</string>
     <string name="item_name">Item name</string>
     <string name="description">Description</string>

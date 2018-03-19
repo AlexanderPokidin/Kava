@@ -10,7 +10,7 @@ public class Kava {
     private int price;
 
     public static final Kava[] kavas = {
-            new Kava("Espresso", "Small koffee drink", "50", R.drawable.kava_item, 10),
+            new Kava("Espresso", "Small koffee drink", "50", R.drawable.espresso_item, 10),
             new Kava("Americano", "Middle coffee drink", "100", R.drawable.kava_item, 12),
             new Kava("Latte", "Long koffee drink with milk", "350", R.drawable.kava_item, 20),
             new Kava("Cappuccino", "Koffee drink with milk and cream", "300", R.drawable.kava_item, 18),
