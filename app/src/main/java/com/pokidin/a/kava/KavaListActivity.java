@@ -22,6 +22,7 @@ public class KavaListActivity extends ListActivity {
         ArrayAdapter<Kava> listAdapter = new ArrayAdapter<Kava>(
                 this, android.R.layout.simple_list_item_1, Kava.kavas);
         listKavas.setAdapter(listAdapter);
+        listKavas.setBackgroundResource(R.color.backgroundColor);
         Log.i(TAG, "Adapter started");
     }
 

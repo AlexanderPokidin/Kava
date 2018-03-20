@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     tools:context="com.pokidin.a.kava.KavaActivity">
 
     <TextView
@@ -142,7 +143,7 @@
     <Button
         android:id="@+id/order_button"
         android:layout_width="160dp"
-        android:layout_height="81dp"
+        android:layout_height="80dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
