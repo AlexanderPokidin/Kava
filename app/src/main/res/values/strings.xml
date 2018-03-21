@@ -7,4 +7,11 @@
     <string name="total_cost">Total cost </string>
     <string name="create_order">Create order</string>
     <string name="favorites">Add to favorites</string>
+
+    <string name="espresso">Small koffee drink</string>
+    <string name="americano">Middle coffee drink</string>
+    <string name="raf">Koffee drink with cream</string>
+    <string name="latte">Long koffee drink with milk</string>
+    <string name="lav_latte">Long koffee drink with milk and lavender flowers</string>
+    <string name="capuccino">Koffee drink with milk and cream</string>
 </resources>
