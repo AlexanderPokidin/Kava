@@ -30,7 +30,7 @@ public class KavaDatabaseHelper extends SQLiteOpenHelper {
                 R.drawable.raf_item, R.string.raf);
         insertDrink(db, "Latte 270 ml", 20,
                 R.drawable.latte_item, R.string.latte);
-        insertDrink(db, "Lavender_Latte 270 ml", 25,
+        insertDrink(db, "Lavender latte 270 ml", 25,
                 R.drawable.lavlate_item, R.string.lav_latte);
         insertDrink(db, "Cappuccino 270 ml", 18,
                 R.drawable.kava_item, R.string.capuccino);
