@@ -1,6 +1,10 @@
 package com.pokidin.a.kava;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +20,8 @@ public class KavaActivity extends AppCompatActivity {
     public static final String EXTRA_KAVANO = "kavaNo";
 
     private int count = 1;
-
+    private int priceNum;
+    private String nameText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,34 +29,46 @@ public class KavaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_kava);
         Log.i(TAG, "onCreate started");
 
-//        int kavaNo = (Integer) getIntent().getExtras().get(EXTRA_KAVANO);
-//        Kava kava = Kava.kavas[kavaNo];
-
-        TextView name = (TextView) findViewById(R.id.item_name);
-        name.setText(readIntent().getName());
-        Log.i(TAG, "Name is done");
-
-        TextView description = (TextView) findViewById(R.id.description);
-        description.setText(readIntent().getDescription());
-        Log.i(TAG, "Description is done");
-
-        ImageView photo = (ImageView) findViewById(R.id.item_view);
-        photo.setImageResource(readIntent().getImageResourceId());
-        photo.setContentDescription(readIntent().getName());
-        Log.i(TAG, "Image is done");
-
-        TextView price = (TextView) findViewById(R.id.item_price);
-        price.setText("" + readIntent().getPrice());
-    }
-
-    private Kava readIntent() {
         int kavaNo = (Integer) getIntent().getExtras().get(EXTRA_KAVANO);
-        return Kava.kavas[kavaNo];
+
+        try {
+            SQLiteOpenHelper kavaDatabaseHelper = new KavaDatabaseHelper(this);
+            SQLiteDatabase db = kavaDatabaseHelper.getReadableDatabase();
+            Cursor cursor = db.query("DRINK",
+                    new String[]{"NAME", "PRICE", "IMAGE_RESOURCE_ID", "DESCRIPTION_RESOURCE_ID"},
+                    "_id = ?",
+                    new String[]{Integer.toString(kavaNo)},
+                    null, null, null);
+            if (cursor.moveToFirst()) {
+                nameText = cursor.getString(0);
+                priceNum = cursor.getInt(1);
+                String priceText = Integer.toString(priceNum);
+                int imageId = cursor.getInt(2);
+                int descriptionId = cursor.getInt(3);
+
+                TextView name = (TextView) findViewById(R.id.item_name);
+                name.setText(nameText);
+
+                TextView price = (TextView) findViewById(R.id.item_price);
+                price.setText(priceText);
+
+                ImageView photo = (ImageView) findViewById(R.id.item_view);
+                photo.setImageResource(imageId);
+                photo.setContentDescription(nameText);
+
+                TextView description = (TextView) findViewById(R.id.description);
+                description.setText(descriptionId);
+            }
+            cursor.close();
+            db.close();
+        } catch (SQLiteException e) {
+            Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     private int calculatePrice(int count) {
-        int price = readIntent().getPrice();
-        int cost = price * count;
+        int cost = priceNum * count;
         displayCost(cost);
         Log.i(TAG, "Price is done");
         Log.i(TAG, "Cost is: " + cost);
@@ -60,7 +77,8 @@ public class KavaActivity extends AppCompatActivity {
 
     public void increment(View view) {
         if (count > 4) {
-            Toast maxToast = Toast.makeText(getApplicationContext(), "There is nothing more", Toast.LENGTH_SHORT);
+            Toast maxToast = Toast.makeText(getApplicationContext(),
+                    "There is nothing more", Toast.LENGTH_SHORT);
             maxToast.show();
             return;
         }
@@ -71,7 +89,8 @@ public class KavaActivity extends AppCompatActivity {
 
     public void decrement(View view) {
         if (count < 2) {
-            Toast minToast = Toast.makeText(getApplicationContext(), "There is nothing less", Toast.LENGTH_SHORT);
+            Toast minToast = Toast.makeText(getApplicationContext(),
+                    "There is nothing less", Toast.LENGTH_SHORT);
             minToast.show();
             return;
         }
@@ -103,19 +122,17 @@ public class KavaActivity extends AppCompatActivity {
     private String createOrderSubject() {
         EditText editName = (EditText) findViewById(R.id.customer_name);
         String customer_Name = editName.getText().toString();
-        String orderSubject = readIntent().getName();
+        String orderSubject = nameText;
         orderSubject += ", for " + customer_Name;
         Log.i(TAG, "Name is: " + customer_Name);
         return orderSubject;
     }
 
     private String createOrderMessage() {
-        int price = readIntent().getPrice();
-        String orderMessage = readIntent().getName() + "\n";
-        orderMessage += readIntent().getSize() + "\n";
-        orderMessage += price + "\n";
-        orderMessage += count + "\n";
-        orderMessage += calculatePrice(count);
+        String orderMessage = nameText + "\n";
+        orderMessage += "Price: " + priceNum + " UAH \n";
+        orderMessage += "Count: " + count + "\n";
+        orderMessage += "Cost: " + calculatePrice(count) + " UAH";
         Log.i(TAG, "Order is: " + orderMessage);
         return orderMessage;
     }
