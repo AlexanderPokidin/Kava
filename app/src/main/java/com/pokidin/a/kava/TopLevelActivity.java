@@ -37,16 +37,6 @@ public class TopLevelActivity extends AppCompatActivity {
             }
         });
 
-//        AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (position == 0) {
-//                    Intent intent = new Intent(TopLevelActivity.this, KavaListActivity.class);
-//                    startActivity(intent);
-//                }
-//            }
-//        };
-
         ListView listFavorites = (ListView) findViewById(R.id.list_favorites);
         try {
             SQLiteOpenHelper kavaDatabaseHelper = new KavaDatabaseHelper(this);
