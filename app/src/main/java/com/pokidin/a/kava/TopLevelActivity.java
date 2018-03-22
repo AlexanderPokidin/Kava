@@ -73,4 +73,23 @@ public class TopLevelActivity extends AppCompatActivity {
         favoritesCursor.close();
         db.close();
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        try {
+            SQLiteOpenHelper kavaDatabaseHelper = new KavaDatabaseHelper(this);
+            db = kavaDatabaseHelper.getReadableDatabase();
+            Cursor newCursor = db.query("DRINK",
+                    new String[] {"_id", "NAME"},
+                    "FAVORITE = 1",
+                    null, null, null, null);
+            ListView listFavorites = (ListView) findViewById(R.id.list_favorites);
+            CursorAdapter adapter = (CursorAdapter) listFavorites.getAdapter();
+            adapter.changeCursor(newCursor);
+        } catch (SQLiteException e) {
+            Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
 }
