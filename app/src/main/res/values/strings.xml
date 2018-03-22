@@ -1,12 +1,16 @@
 <resources>
     <string name="app_name">KavaBulki</string>
+
+    <string name="favorites">Favorites</string>
+    <string name="menu">Menu</string>
+
     <string name="customer_name">Who are you?</string>
     <string name="item_name">Item name</string>
     <string name="description">Description</string>
     <string name="price">Price </string>
     <string name="total_cost">Total cost </string>
     <string name="create_order">Create order</string>
-    <string name="favorites">Add to favorites</string>
+    <string name="add_favorites">Add to favorites</string>
 
     <string name="espresso">Small coffee drink</string>
     <string name="americano">Middle coffee drink</string>
