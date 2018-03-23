@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -20,28 +21,17 @@ public class KavaListActivity extends ListActivity {
     private static final String TAG = "KavaListActivity";
     private SQLiteDatabase db;
     private Cursor cursor;
+    private ListView listDrinks;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "List started to create");
-        ListView listDrinks = getListView();
+        listDrinks = getListView();
 
         try {
-            SQLiteOpenHelper kavaDatabaseHelper = new KavaDatabaseHelper(this);
-            db = kavaDatabaseHelper.getReadableDatabase();
-
-            cursor = db.query("DRINK",
-                    new String[]{"_id", "NAME"},
-                    null, null, null, null, null);
-            CursorAdapter listAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
-                    cursor,
-                    new String[]{"NAME"},
-                    new int[]{android.R.id.text1},
-                    0);
-            listDrinks.setAdapter(listAdapter);
+            new ReadDatabaseTask().execute();
             listDrinks.setBackgroundResource(R.color.backgroundColor);
-            Log.i(TAG, "List created");
         } catch (SQLiteException e) {
             Log.i(TAG, "DB Exception");
             Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
@@ -62,5 +52,29 @@ public class KavaListActivity extends ListActivity {
         intent.putExtra(KavaActivity.EXTRA_KAVANO, (int) id);
         startActivity(intent);
         Log.i(TAG, "Intent started");
+    }
+
+    private class ReadDatabaseTask extends AsyncTask<Void, Void, CursorAdapter> {
+
+        @Override
+        protected CursorAdapter doInBackground(Void... voids) {
+            SQLiteOpenHelper kavaDatabaseHelper = new KavaDatabaseHelper(KavaListActivity.this);
+            db = kavaDatabaseHelper.getReadableDatabase();
+            cursor = db.query("DRINK",
+                    new String[]{"_id", "NAME"},
+                    null, null, null, null, null);
+            return new SimpleCursorAdapter(KavaListActivity.this,
+                    android.R.layout.simple_list_item_1,
+                    cursor,
+                    new String[]{"NAME"},
+                    new int[]{android.R.id.text1},
+                    0);
+        }
+
+        @Override
+        protected void onPostExecute(CursorAdapter listAdapter) {
+            listDrinks.setAdapter(listAdapter);
+            Log.i(TAG, "List created");
+        }
     }
 }

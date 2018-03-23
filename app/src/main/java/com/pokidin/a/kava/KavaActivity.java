@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ public class KavaActivity extends AppCompatActivity {
     private int count = 1;
     private int priceNum;
     private String nameText;
+    private int kavaNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,42 +33,10 @@ public class KavaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_kava);
         Log.i(TAG, "onCreate started");
 
-        int kavaNo = (Integer) getIntent().getExtras().get(EXTRA_KAVANO);
+        kavaNo = (Integer) getIntent().getExtras().get(EXTRA_KAVANO);
 
         try {
-            SQLiteOpenHelper kavaDatabaseHelper = new KavaDatabaseHelper(this);
-            SQLiteDatabase db = kavaDatabaseHelper.getWritableDatabase();
-            Cursor cursor = db.query("DRINK",
-                    new String[]{"NAME", "PRICE", "IMAGE_RESOURCE_ID", "DESCRIPTION_RESOURCE_ID", "FAVORITE"},
-                    "_id = ?",
-                    new String[]{Integer.toString(kavaNo)},
-                    null, null, null);
-            if (cursor.moveToFirst()) {
-                nameText = cursor.getString(0);
-                priceNum = cursor.getInt(1);
-                String priceText = Integer.toString(priceNum);
-                int imageId = cursor.getInt(2);
-                int descriptionId = cursor.getInt(3);
-                boolean isFavorite = (cursor.getInt(4) == 1);
-
-                TextView name = (TextView) findViewById(R.id.item_name);
-                name.setText(nameText);
-
-                TextView price = (TextView) findViewById(R.id.item_price);
-                price.setText(priceText);
-
-                ImageView photo = (ImageView) findViewById(R.id.item_view);
-                photo.setImageResource(imageId);
-                photo.setContentDescription(nameText);
-
-                TextView description = (TextView) findViewById(R.id.description);
-                description.setText(descriptionId);
-
-                CheckBox favorite = (CheckBox) findViewById(R.id.favorite);
-                favorite.setChecked(isFavorite);
-            }
-            cursor.close();
-            db.close();
+            new ReadDatabaseTask().execute(kavaNo);
         } catch (SQLiteException e) {
             Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
             toast.show();
@@ -74,22 +44,7 @@ public class KavaActivity extends AppCompatActivity {
     }
 
     public void onFavoriteClicked(View view) {
-        int kavaNo = (Integer) getIntent().getExtras().get(EXTRA_KAVANO);
-        CheckBox favorite = (CheckBox) findViewById(R.id.favorite);
-        ContentValues drinkValues = new ContentValues();
-        drinkValues.put("FAVORITE", favorite.isChecked());
-        SQLiteOpenHelper kavaDatabaseHelper = new KavaDatabaseHelper(KavaActivity.this);
-        {
-            try {
-                SQLiteDatabase db = kavaDatabaseHelper.getWritableDatabase();
-                db.update("DRINK", drinkValues, "_id = ?",
-                        new String[]{Integer.toString(kavaNo)});
-                db.close();
-            } catch (SQLiteException e) {
-                Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        }
+        new FavoriteDrinksTask().execute(kavaNo);
     }
 
     private int calculatePrice(int count) {
@@ -160,5 +115,94 @@ public class KavaActivity extends AppCompatActivity {
         orderMessage += "Cost: " + calculatePrice(count) + " UAH";
         Log.i(TAG, "Order is: " + orderMessage);
         return orderMessage;
+    }
+
+    private class ReadDatabaseTask extends AsyncTask<Integer, Void, Cursor> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Cursor doInBackground(Integer... drinks) {
+            int kavaNo = drinks[0];
+            SQLiteOpenHelper kavaDatabaseHelper = new KavaDatabaseHelper(KavaActivity.this);
+            SQLiteDatabase db = kavaDatabaseHelper.getWritableDatabase();
+            Cursor cursor = db.query("DRINK",
+                    new String[]{"NAME", "PRICE", "IMAGE_RESOURCE_ID", "DESCRIPTION_RESOURCE_ID", "FAVORITE"},
+                    "_id = ?",
+                    new String[]{Integer.toString(kavaNo)},
+                    null, null, null);
+            if (cursor.moveToFirst()) {
+                return cursor;
+            }
+            db.close();
+            return cursor;
+        }
+
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+            nameText = cursor.getString(0);
+            priceNum = cursor.getInt(1);
+            String priceText = Integer.toString(priceNum);
+            int imageId = cursor.getInt(2);
+            int descriptionId = cursor.getInt(3);
+            boolean isFavorite = (cursor.getInt(4) == 1);
+
+            TextView name = (TextView) findViewById(R.id.item_name);
+            name.setText(nameText);
+
+            TextView price = (TextView) findViewById(R.id.item_price);
+            price.setText(priceText);
+
+            ImageView photo = (ImageView) findViewById(R.id.item_view);
+            photo.setImageResource(imageId);
+            photo.setContentDescription(nameText);
+
+            TextView description = (TextView) findViewById(R.id.description);
+            description.setText(descriptionId);
+
+            CheckBox favorite = (CheckBox) findViewById(R.id.favorite);
+            favorite.setChecked(isFavorite);
+
+            cursor.close();
+        }
+    }
+
+    private class FavoriteDrinksTask extends AsyncTask<Integer, Void, Boolean> {
+        ContentValues drinkValues;
+
+        @Override
+        protected void onPreExecute() {
+            CheckBox favorite = (CheckBox) findViewById(R.id.favorite);
+            drinkValues = new ContentValues();
+            drinkValues.put("FAVORITE", favorite.isChecked());
+        }
+
+        @Override
+        protected Boolean doInBackground(Integer... drinks) {
+            int kavaNo = drinks[0];
+            SQLiteOpenHelper kavaDatabaseHelper = new KavaDatabaseHelper(KavaActivity.this);
+            {
+                try {
+                    SQLiteDatabase db = kavaDatabaseHelper.getWritableDatabase();
+                    db.update("DRINK", drinkValues, "_id = ?",
+                            new String[]{Integer.toString(kavaNo)});
+                    db.close();
+                    return true;
+                } catch (SQLiteException e) {
+                    return false;
+                }
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (!success) {
+                Toast toast = Toast.makeText(KavaActivity.this, "Database unavailable", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
     }
 }
