@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ public class TopLevelActivity extends AppCompatActivity {
 
     private SQLiteDatabase db;
     private Cursor favoritesCursor;
+    ListView listFavorites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,20 +39,9 @@ public class TopLevelActivity extends AppCompatActivity {
             }
         });
 
-        ListView listFavorites = (ListView) findViewById(R.id.list_favorites);
+        listFavorites = (ListView) findViewById(R.id.list_favorites);
         try {
-            SQLiteOpenHelper kavaDatabaseHelper = new KavaDatabaseHelper(this);
-            db = kavaDatabaseHelper.getReadableDatabase();
-            favoritesCursor = db.query("DRINK",
-                    new String[] {"_id", "NAME"},
-                    "FAVORITE = 1",
-                    null, null, null, null);
-            CursorAdapter favoriteAdapter = new SimpleCursorAdapter(TopLevelActivity.this,
-                    android.R.layout.simple_list_item_1,
-                    favoritesCursor,
-                    new String[]{"NAME"},
-                    new int[]{android.R.id.text1}, 0);
-            listFavorites.setAdapter(favoriteAdapter);
+            new FavoriteListTask().execute();
         } catch (SQLiteException e) {
             Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
             toast.show();
@@ -61,10 +52,34 @@ public class TopLevelActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(TopLevelActivity.this, KavaActivity.class);
-                intent.putExtra(KavaActivity.EXTRA_KAVANO, (int)id);
+                intent.putExtra(KavaActivity.EXTRA_KAVANO, (int) id);
                 startActivity(intent);
             }
         });
+    }
+
+    private class FavoriteListTask extends AsyncTask<Void, Void, CursorAdapter> {
+
+        @Override
+        protected CursorAdapter doInBackground(Void... voids) {
+            SQLiteOpenHelper kavaDatabaseHelper = new KavaDatabaseHelper(TopLevelActivity.this);
+            db = kavaDatabaseHelper.getReadableDatabase();
+            favoritesCursor = db.query("DRINK",
+                    new String[]{"_id", "NAME"},
+                    "FAVORITE = 1",
+                    null, null, null, null);
+            CursorAdapter favoriteAdapter = new SimpleCursorAdapter(TopLevelActivity.this,
+                    android.R.layout.simple_list_item_1,
+                    favoritesCursor,
+                    new String[]{"NAME"},
+                    new int[]{android.R.id.text1}, 0);
+            return favoriteAdapter;
+        }
+
+        @Override
+        protected void onPostExecute(CursorAdapter favoriteAdapter) {
+            listFavorites.setAdapter(favoriteAdapter);
+        }
     }
 
     @Override
@@ -81,7 +96,7 @@ public class TopLevelActivity extends AppCompatActivity {
             SQLiteOpenHelper kavaDatabaseHelper = new KavaDatabaseHelper(this);
             db = kavaDatabaseHelper.getReadableDatabase();
             Cursor newCursor = db.query("DRINK",
-                    new String[] {"_id", "NAME"},
+                    new String[]{"_id", "NAME"},
                     "FAVORITE = 1",
                     null, null, null, null);
             ListView listFavorites = (ListView) findViewById(R.id.list_favorites);
