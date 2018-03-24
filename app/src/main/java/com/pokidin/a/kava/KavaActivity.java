@@ -48,7 +48,13 @@ public class KavaActivity extends AppCompatActivity {
     }
 
     private int calculatePrice(int count) {
-        int cost = priceNum * count;
+        int cost;
+        CheckBox addMilk = (CheckBox) findViewById(R.id.milk);
+        if (addMilk.isChecked()) {
+            cost = (priceNum + 2) * count;
+        } else {
+            cost = priceNum * count;
+        }
         displayCost(cost);
         Log.i(TAG, "Price is done");
         Log.i(TAG, "Cost is: " + cost);
@@ -118,11 +124,6 @@ public class KavaActivity extends AppCompatActivity {
     }
 
     private class ReadDatabaseTask extends AsyncTask<Integer, Void, Cursor> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         @Override
         protected Cursor doInBackground(Integer... drinks) {
