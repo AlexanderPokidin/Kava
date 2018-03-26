@@ -22,6 +22,7 @@ public class KavaDatabaseHelper extends SQLiteOpenHelper {
                 + "IMAGE_RESOURCE_ID INTEGER, "
                 + "DESCRIPTION_RESOURCE_ID INTEGER, "
                 + "FAVORITE NUMERIC);");
+
         insertDrink(db, "Espresso 30 ml", 12,
                 R.drawable.espresso_item, R.string.espresso);
 
@@ -57,6 +58,52 @@ public class KavaDatabaseHelper extends SQLiteOpenHelper {
                 R.drawable.capuccino_item, R.string.capuccino);
         insertDrink(db, "Cappuccino 500 ml", 30,
                 R.drawable.capuccino_item, R.string.capuccino);
+
+        insertDrink(db, "Flat White 270 ml", 25,
+                R.drawable.flatewhite_item, R.string.flat_white);
+
+        insertDrink(db, "Cacao 270 ml", 20,
+                R.drawable.cacao_item, R.string.cacao);
+        insertDrink(db, "Cacao 400 ml", 22,
+                R.drawable.cacao_item, R.string.cacao);
+        insertDrink(db, "Cacao 500 ml", 30,
+                R.drawable.cacao_item, R.string.cacao);
+
+        insertDrink(db, "Hot chocolate 270 ml", 25,
+                R.drawable.chocolate_item, R.string.chocolate);
+        insertDrink(db, "Hot chocolate 400 ml", 35,
+                R.drawable.chocolate_item, R.string.chocolate);
+
+        insertDrink(db, "Espresso maciato 90 ml", 17,
+                R.drawable.maciato_item, R.string.maciato);
+
+        insertDrink(db, "Espresso romano 30 ml", 14,
+                R.drawable.romano_item, R.string.romano);
+
+        insertDrink(db, "Coffee-in-Kyiv 50 ml", 12,
+                R.drawable.kyivkava_item, R.string.kyiv_kava);
+
+        insertDrink(db, "Dopio 60 ml", 22,
+                R.drawable.dopio_item, R.string.dopio);
+
+        insertDrink(db, "Coffee juice 270 ml", 25,
+                R.drawable.kavajuice_item, R.string.juice);
+        insertDrink(db, "Coffee juice 400 ml", 30,
+                R.drawable.kavajuice_item, R.string.juice);
+
+        insertDrink(db, "Maroccino 270 ml", 23,
+                R.drawable.maroccino_item, R.string.maroccino);
+        insertDrink(db, "Maroccino 400 ml", 25,
+                R.drawable.maroccino_item, R.string.maroccino);
+        insertDrink(db, "Maroccino 500 ml", 30,
+                R.drawable.maroccino_item, R.string.maroccino);
+
+        insertDrink(db, "Sweet life 270 ml", 26,
+                R.drawable.sweetlife_item, R.string.swetty);
+        insertDrink(db, "Sweet life 400 ml", 30,
+                R.drawable.sweetlife_item, R.string.swetty);
+        insertDrink(db, "Sweet life 500 ml", 33,
+                R.drawable.sweetlife_item, R.string.swetty);
     }
 
     @Override
