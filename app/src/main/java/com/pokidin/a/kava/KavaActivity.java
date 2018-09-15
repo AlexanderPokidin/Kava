@@ -1,6 +1,5 @@
 package com.pokidin.a.kava;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class KavaActivity extends Activity {
+public class KavaActivity extends AppCompatActivity {
     private static final String TAG = "KavaActivity";
     public static final String EXTRA_KAVANO = "kavaNo";
 

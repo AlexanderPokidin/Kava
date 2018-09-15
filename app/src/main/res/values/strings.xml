@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KavaBulki</string>
+    <string name="app_name">KavaBulki v2</string>
 
     <string name="favorites">Favorites</string>
     <string name="menu">Menu</string>
@@ -18,17 +18,37 @@
     <string name="raf">Coffee drink with cream</string>
     <string name="latte">Long coffee drink with milk</string>
     <string name="lav_latte">Long coffee drink with milk and lavender flowers</string>
-    <string name="capuccino">Coffee drink with milk and cream</string>
+    <string name="cappuccino">Coffee drink with milk and cream</string>
     <string name="flat_white">Bla-bla-flat with milk</string>
     <string name="cacao">Cacao with milk</string>
     <string name="chocolate">Hot chocolate</string>
-    <string name="maciato">Espresso with milk cream</string>
+    <string name="macchiato">Espresso with milk cream</string>
     <string name="romano">Espresso with lemon</string>
     <string name="kyiv_kava">Bla-bla-Kyiv</string>
     <string name="dopio">Bla-bla-dopio</string>
     <string name="juice">Warm juice with coffee</string>
-    <string name="maroccino">Bla-bla-maroccino</string>
+    <string name="marocchino">Bla-bla-maroccino</string>
     <string name="swetty">Coffee with condensed milk</string>
+
+    <string name="espresso_name">Espresso</string>
+    <string name="americano_name">Americano</string>
+    <string name="raf_name">Raf</string>
+    <string name="latte_name">Latte</string>
+    <string name="lav_latte_name">Lavender latte</string>
+    <string name="cappuccino_name">Cappuccino</string>
+    <string name="flat_white_name">Flat white</string>
+    <string name="cacao_name">Cacao</string>
+    <string name="chocolate_name">Hot chocolate</string>
+    <string name="macchiato_name">Espresso macchiato</string>
+    <string name="romano_name">Espresso romano</string>
+    <string name="kyiv_kava_name">Coffee-in-Kyiv</string>
+    <string name="dopio_name">Dopio</string>
+    <string name="juice_name">Coffee juice</string>
+    <string name="marocchino_name">Marocchino</string>
+    <string name="swetty_name">Sweet life</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
