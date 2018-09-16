@@ -4,6 +4,7 @@ package com.pokidin.a.kava;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,21 +20,33 @@ public class TopLevelFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_top_level, container, false);
         Button button = view.findViewById(R.id.btn_menu);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), KavaListActivity.class);
-                startActivity(intent);
-                Log.i(TAG, "Intent started");
+//                Intent intent = new Intent(getActivity(), KavaListActivity.class);
+//                startActivity(intent);
+//                Log.i(TAG, "Intent started");
+
+
+                FragmentManager fragmentManager = getChildFragmentManager();
+                fragmentManager.beginTransaction()
+                        .add(R.id.rw_list, getFragment())
+                        .addToBackStack(RecyclerViewFragment.class.getSimpleName())
+                        .commit();
+                Log.i(TAG, "RecyclerViewFragment started");
             }
         });
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private RecyclerViewFragment getFragment(){
+        return RecyclerViewFragment.newInstance();
     }
 
 
