@@ -2,7 +2,6 @@ package com.pokidin.a.kava;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +19,7 @@ public class RecyclerViewFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private KavaAdapter mKavaAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public static RecyclerViewFragment newInstance() {
 
@@ -39,9 +39,13 @@ public class RecyclerViewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recycler_view, container, false);
         mRecyclerView = view.findViewById(R.id.rw_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mKavaAdapter = new KavaAdapter();
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mKavaAdapter = new KavaAdapter(Kava.kavas);
         mRecyclerView.setAdapter(mKavaAdapter);
         // Inflate the layout for this fragment
         return view;

@@ -34,7 +34,7 @@ public class TopLevelFragment extends Fragment {
 
                 FragmentManager fragmentManager = getChildFragmentManager();
                 fragmentManager.beginTransaction()
-                        .add(R.id.rw_list, getFragment())
+                        .add(R.id.fr_container, getFragment())
                         .addToBackStack(RecyclerViewFragment.class.getSimpleName())
                         .commit();
                 Log.i(TAG, "RecyclerViewFragment started");

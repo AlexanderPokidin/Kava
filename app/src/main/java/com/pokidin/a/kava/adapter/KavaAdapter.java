@@ -9,12 +9,13 @@ import android.widget.TextView;
 import com.pokidin.a.kava.Kava;
 import com.pokidin.a.kava.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class KavaAdapter extends RecyclerView.Adapter<KavaAdapter.KavaViewHolder>{
 
-    private List<Kava> mKavaList = new ArrayList<>();
+    private Kava[] mKavas;
+
+    public KavaAdapter(Kava[] kavas){
+        mKavas = kavas;
+    }
 
 
     @Override
@@ -26,12 +27,12 @@ public class KavaAdapter extends RecyclerView.Adapter<KavaAdapter.KavaViewHolder
 
     @Override
     public void onBindViewHolder(KavaViewHolder holder, int position) {
-        holder.bind(mKavaList.get(position));
+        holder.bind(mKavas[position]);
     }
 
     @Override
     public int getItemCount() {
-        return mKavaList.size();
+        return mKavas.length;
     }
 
     class KavaViewHolder extends RecyclerView.ViewHolder{
