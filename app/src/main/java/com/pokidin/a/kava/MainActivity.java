@@ -12,15 +12,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState ==  null){
+        if (savedInstanceState == null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .add(R.id.fr_container, getFragment())
+                    .add(R.id.fr_container, TopLevelFragment.newInstance())
                     .commit();
         }
     }
 
-    private Fragment getFragment(){
+    private Fragment getFragment() {
         return TopLevelFragment.newInstance();
     }
 }

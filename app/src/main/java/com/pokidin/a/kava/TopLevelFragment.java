@@ -34,7 +34,7 @@ public class TopLevelFragment extends Fragment {
 
                 FragmentManager fragmentManager = getChildFragmentManager();
                 fragmentManager.beginTransaction()
-                        .add(R.id.fr_container, getFragment())
+                        .replace(R.id.fr_container, KavaFragment.newInstance())
                         .addToBackStack(RecyclerViewFragment.class.getSimpleName())
                         .commit();
                 Log.i(TAG, "RecyclerViewFragment started");
@@ -45,8 +45,8 @@ public class TopLevelFragment extends Fragment {
         return view;
     }
 
-    private RecyclerViewFragment getFragment(){
-        return RecyclerViewFragment.newInstance();
+    private KavaFragment getFragment(){
+        return KavaFragment.newInstance();
     }
 
 
