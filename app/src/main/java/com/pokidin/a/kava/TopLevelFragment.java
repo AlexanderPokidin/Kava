@@ -27,17 +27,12 @@ public class TopLevelFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), KavaListActivity.class);
-//                startActivity(intent);
-//                Log.i(TAG, "Intent started");
+                Intent intent = new Intent(getActivity(), RecyclerViewActivity.class);
+                startActivity(intent);
+                Log.i(TAG, "Intent started");
 
 
-                FragmentManager fragmentManager = getChildFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fr_container, KavaFragment.newInstance())
-                        .addToBackStack(RecyclerViewFragment.class.getSimpleName())
-                        .commit();
-                Log.i(TAG, "RecyclerViewFragment started");
+
             }
         });
 
